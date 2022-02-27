@@ -1,5 +1,6 @@
 using System.Linq;
 using FluentAssertions;
+using Humanizer;
 using Xunit;
 
 namespace RomanNumerals;
@@ -54,6 +55,13 @@ public class RomanNumeralsSpecs
     public void Roman_letters_are_subtracted_when_a_higher_value_follows_a_lower_value(int integer, string roman)
     {
         RomanNumeral.For(integer).Should().Be(roman);
+    }
+    
+
+    [Fact]
+    public void Validation_against_library_method()
+    {
+        for (int i = 1; i < 4000; i++) RomanNumeral.For(i).Should().Be(i.ToRoman());
     }
 }
 
