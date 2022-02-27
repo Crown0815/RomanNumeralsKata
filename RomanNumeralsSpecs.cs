@@ -15,7 +15,7 @@ public class RomanNumeralsSpecs
     [InlineData(100, 'C')]
     [InlineData(500, 'D')]
     [InlineData(1000, 'M')]
-    public void Integer_maps_onto_character(int integer, char roman)
+    public void Integer_maps_onto_roman_letter(int integer, char roman)
     {
         RomenNumeral.For(integer).Should().Be(roman.ToString());
     }
@@ -25,7 +25,7 @@ public class RomanNumeralsSpecs
     [InlineData(10, 'X')]
     [InlineData(100, 'C')]
     [InlineData(1000, 'M')]
-    public void I_X_C_and_M_may_be_repeated_up_to_three_times(int integer, char roman)
+    public void I_X_C_and_M_letters_may_be_repeated_up_to_three_times(int integer, char roman)
     {
         RomenNumeral.For(2*integer).Should().Be($"{roman}{roman}");
         RomenNumeral.For(3*integer).Should().Be($"{roman}{roman}{roman}");
