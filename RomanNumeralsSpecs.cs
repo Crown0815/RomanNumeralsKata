@@ -43,31 +43,26 @@ public class RomanNumeralsSpecs
 
 public static class RomenNumeral
 {
+    private record Temp(int Integer, string Roman);
+    
     public static string For(int integer)
     {
-        if (integer.Contains(1000, 'M', out var ms)) return ms;
+        var x = new Temp(integer, "");
+        x = x.Contains(1000, 'M');
         if (integer == 500) return "D";
-        var x = "";
-        if (integer.Contains(100, 'C', out var cs))
-        {
-            x+=cs;
-            integer -= Contained(integer, 100) * 100;
-        }
+        x = x.Contains(100, 'C');
         if (integer == 50) return "L";
-        if (integer.Contains(10, 'X', out var xs))
-        {
-            x+=xs;
-            integer -= Contained(integer, 10) * 10;
-        }
+        x = x.Contains(10, 'X');
         if (integer == 5) return "V";
-        return x + integer.Times('I');
+        return x.Roman + x.Integer.Times('I');
     }
     
 
-    private static bool Contains(this int integer, int @base, char character, out string roman)
+    private static Temp Contains(this Temp integer, int @base, char letter)
     {
-        roman = Contained(integer, @base).Times(character);
-        return roman != "";
+        var count = Contained(integer.Integer, @base);
+        var roman = integer.Roman + count.Times(letter);
+        return new Temp(integer.Integer - count*@base, roman);
     }
     
     private static int Contained(this int integer, int @base) => integer >= @base 
