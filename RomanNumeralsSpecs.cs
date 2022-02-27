@@ -60,33 +60,46 @@ public class RomanNumeralsSpecs
 public static class RomenNumeral
 {
     private record Temp(int Integer, string Roman);
+
+    private record Map(int Integer, string Letter)
+    {
+        public static Map operator -(Map one, Map two) => new(one.Integer - two.Integer, $"{two.Letter}{one.Letter}");
+    }
+
+    private static readonly Map M = new(1000, "M");
+    private static readonly Map D = new(500, "D");
+    private static readonly Map C = new(100, "C");
+    private static readonly Map L = new(50, "L");
+    private static readonly Map X = new(10, "X");
+    private static readonly Map V = new(5, "V");
+    private static readonly Map I = new(1, "I");
     
     public static string For(int integer)
     {
         return new Temp(integer, "")
-            .Minus(1000, 'M', 100, 'C')
-            .Minus(500, 'D', 100, 'C')
-            .Minus(100, 'C', 10, 'X')
-            .Minus(50, 'L', 10, 'X')
-            .Minus(10, 'X', 1, 'I')
-            .Minus(5, 'V', 1, 'I')
-            .Minus(1, "I")
+            .Minus(M, C)
+            .Minus(D, C)
+            .Minus(C, X)
+            .Minus(L, X)
+            .Minus(X, I)
+            .Minus(V, I)
+            .Minus(I)
             .Roman;
     }
     
 
-    private static Temp Minus(this Temp value, int integer, char letter, int subtrahend, char subtrahendLetter)
+    private static Temp Minus(this Temp value, Map primary, Map subtrahend)
     {
         return value
-            .Minus(integer, $"{letter}")
-            .Minus(integer-subtrahend, $"{subtrahendLetter}{letter}");
+            .Minus(primary)
+            .Minus(primary-subtrahend);
     }
 
-    private static Temp Minus(this Temp value, int integer, string letter)
+    private static Temp Minus(this Temp value, Map map)
     {
-        var count = Contained(value.Integer, integer);
-        var roman = value.Roman + count.Times(letter);
-        return new Temp(value.Integer - count*integer, roman);
+        var count = Contained(value.Integer, map.Integer);
+        var roman = value.Roman + count.Times(map.Letter);
+        return new Temp(value.Integer - count * map.Integer, roman);
     }
     
     private static int Contained(this int integer, int @base) => integer >= @base 
