@@ -41,6 +41,14 @@ public class RomanNumeralsSpecs
     {
         RomenNumeral.For(integer).Should().Be(roman);
     }
+    
+    
+    [Theory]
+    [InlineData(4, "IV")]
+    public void Roman_letters_are_subtracted_when_a_higher_value_follows_a_lower_value(int integer, string roman)
+    {
+        RomenNumeral.For(integer).Should().Be(roman);
+    }
 }
 
 public static class RomenNumeral
@@ -50,18 +58,19 @@ public static class RomenNumeral
     public static string For(int integer)
     {
         return new Temp(integer, "")
-            .Minus(1000, 'M')
-            .Minus(500, 'D')
-            .Minus(100, 'C')
-            .Minus(50, 'L')
-            .Minus(10, 'X')
-            .Minus(5, 'V')
-            .Minus(1, 'I')
+            .Minus(1000, "M")
+            .Minus(500, "D")
+            .Minus(100, "C")
+            .Minus(50, "L")
+            .Minus(10, "X")
+            .Minus(5, "V")
+            .Minus(4, "IV")
+            .Minus(1, "I")
             .Roman;
     }
     
 
-    private static Temp Minus(this Temp value, int integer, char letter)
+    private static Temp Minus(this Temp value, int integer, string letter)
     {
         var count = Contained(value.Integer, integer);
         var roman = value.Roman + count.Times(letter);
@@ -72,5 +81,5 @@ public static class RomenNumeral
         ? integer / @base
         : 0;
 
-    private static string Times(this int repeats, char letter) => new(Enumerable.Repeat(letter, repeats).ToArray());
+    private static string Times(this int repeats, string letter) => string.Join("", Enumerable.Repeat(letter, repeats));
 }
