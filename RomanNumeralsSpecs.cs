@@ -45,12 +45,16 @@ public static class RomenNumeral
         return integer.Times('I');
     }
 
-    private static bool MultiplesOf(this int integer, int @base, char letter, out string roman)
+    private static bool MultiplesOf(this int integer, int @base, char character, out string roman)
     {
-        roman = integer.IsMultipleOf(@base) 
-            ? (integer / @base).Times(letter) 
-            : "";
+        roman = MultiplesOf(integer, @base).Times(character);
         return roman != "";
+    }
+    private static int MultiplesOf(this int integer, int @base)
+    {
+        return integer.IsMultipleOf(@base) 
+            ? integer / @base
+            : 0;
     }
 
     private static string Times(this int repeats, char letter)
