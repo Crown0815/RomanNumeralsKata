@@ -34,6 +34,7 @@ public class RomanNumeralsSpecs
     [Theory]
     [InlineData(11, "XI")]
     [InlineData(111, "CXI")]
+    [InlineData(1111, "MCXI")]
     public void Roman_letters_are_added_when_a_lower_value_follows_a_higher_value(int integer, string roman)
     {
         RomenNumeral.For(integer).Should().Be(roman);
