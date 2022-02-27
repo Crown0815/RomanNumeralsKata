@@ -67,49 +67,42 @@ public class RomanNumeralsSpecs
 
 public static class RomanNumeral
 {
-    private record Temp(int Integer, string Roman)
+    private record Map(int Integer, string Letter, Map? Subtrahend = null)
     {
-        public Temp After(Map map) => new(Integer - map.Integer, Roman + map.Letter);
-    }
-
-    private record Map(int Integer, string Letter)
-    {
+        public Map Lowered() => Subtrahend is null ? this : this - Subtrahend!;
         public static Map operator -(Map one, Map two) => new(one.Integer - two.Integer, $"{two.Letter}{one.Letter}");
         public static Map operator *(int count, Map map) => new(count * map.Integer, count.Times(map.Letter));
     }
 
-    private static readonly Map M = new(1000, "M");
-    private static readonly Map D = new(500, "D");
-    private static readonly Map C = new(100, "C");
-    private static readonly Map L = new(50, "L");
-    private static readonly Map X = new(10, "X");
-    private static readonly Map V = new(5, "V");
     private static readonly Map I = new(1, "I");
+    private static readonly Map V = new(5, "V", I);
+    private static readonly Map X = new(10, "X", I);
+    private static readonly Map L = new(50, "L", X);
+    private static readonly Map C = new(100, "C", X);
+    private static readonly Map D = new(500, "D", C);
+    private static readonly Map M = new(1000, "M", C);
     
-    public static string For(int integer)
-    {
-        return new Temp(integer, "")
-            .Minus(M, C)
-            .Minus(D, C)
-            .Minus(C, X)
-            .Minus(L, X)
-            .Minus(X, I)
-            .Minus(V, I)
-            .Minus(I)
+    
+    private record Buffer(int Rest, string Roman);
+    
+    public static string For(int integer) => new Buffer(integer, "")
+            .ApplyAll(M, D, C, L, X, V, I)
             .Roman;
-    }
+
+    private static Buffer ApplyAll(this Buffer buffer, params Map[] maps) => maps.Aggregate(buffer, ApplyWithLowering);
+
+    private static Buffer ApplyWithLowering(this Buffer buffer, Map map) => buffer
+        .ApplyMultiplesOf(map)
+        .ApplyMultiplesOf(map.Lowered());
+
+    private static Buffer ApplyMultiplesOf(this Buffer buffer, Map map) => buffer.Apply(map.CountIn(buffer) * map);
     
+    private static Buffer Apply(this Buffer buffer, Map map) => new(buffer.Rest - map.Integer, buffer.Roman + map.Letter);
 
-    private static Temp Minus(this Temp value, Map primary, Map subtrahend) => value
-        .Minus(primary)
-        .Minus(primary-subtrahend);
-
-    private static Temp Minus(this Temp value, Map map) => value.After(map.CountIn(value) * map);
-
-    private static int CountIn(this Map @base, Temp current) => @base.Integer.CountIn(current.Integer);
     
-    private static int CountIn(this int @base, int integer) => integer >= @base 
-        ? integer / @base
+    private static int CountIn(this Map map, Buffer buffer) => map.Integer.CountIn(buffer.Rest);
+    private static int CountIn(this int @base, int value) => value >= @base 
+        ? value / @base
         : 0;
 
     private static string Times(this int repeats, string letter) => string.Join("", Enumerable.Repeat(letter, repeats));
