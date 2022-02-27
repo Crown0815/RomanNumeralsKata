@@ -44,9 +44,9 @@ public static class RomenNumeral
 {
     public static string For(int integer)
     {
-        if (integer.MultiplesOf(1000, 'M', out var ms)) return ms;
+        if (integer.Contains(1000, 'M', out var ms)) return ms;
         if (integer == 500) return "D";
-        if (integer.MultiplesOf(100, 'C', out var cs)) return cs;
+        if (integer.Contains(100, 'C', out var cs)) return cs;
         if (integer == 50) return "L";
         var x = "";
         if (integer.Contains(10, 'X', out var xs))
@@ -68,18 +68,6 @@ public static class RomenNumeral
     private static int Contained(this int integer, int @base) => integer >= @base 
         ? integer / @base
         : 0;
-    
-    private static bool MultiplesOf(this int integer, int @base, char character, out string roman)
-    {
-        roman = MultiplesOf(integer, @base).Times(character);
-        return roman != "";
-    }
-    
-    private static int MultiplesOf(this int integer, int @base) => integer.IsMultipleOf(@base) 
-            ? integer / @base
-            : 0;
 
     private static string Times(this int repeats, char letter) => new(Enumerable.Repeat(letter, repeats).ToArray());
-
-    private static bool IsMultipleOf(this int integer, int @base) => integer % @base == 0;
 }
