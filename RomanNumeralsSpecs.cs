@@ -36,11 +36,11 @@ public class RomanNumeralsSpecs
     [InlineData(111, "CXI")]
     [InlineData(1111, "MCXI")]
     [InlineData(3333, "MMMCCCXXXIII")]
+    [InlineData(3555, "MMMDLV")]
     public void Roman_letters_are_added_when_a_lower_value_follows_a_higher_value(int integer, string roman)
     {
         RomenNumeral.For(integer).Should().Be(roman);
     }
-
 }
 
 public static class RomenNumeral
