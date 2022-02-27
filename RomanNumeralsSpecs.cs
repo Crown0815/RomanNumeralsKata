@@ -45,6 +45,7 @@ public class RomanNumeralsSpecs
     
     [Theory]
     [InlineData(4, "IV")]
+    [InlineData(9, "IX")]
     public void Roman_letters_are_subtracted_when_a_higher_value_follows_a_lower_value(int integer, string roman)
     {
         RomenNumeral.For(integer).Should().Be(roman);
@@ -63,6 +64,7 @@ public static class RomenNumeral
             .Minus(100, "C")
             .Minus(50, "L")
             .Minus(10, "X")
+            .Minus(9, "IX")
             .Minus(5, "V")
             .Minus(4, "IV")
             .Minus(1, "I")
