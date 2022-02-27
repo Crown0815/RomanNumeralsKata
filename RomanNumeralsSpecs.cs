@@ -33,6 +33,7 @@ public class RomanNumeralsSpecs
     
     [Theory]
     [InlineData(11, "XI")]
+    [InlineData(111, "CXI")]
     public void Roman_letters_are_added_when_a_lower_value_follows_a_higher_value(int integer, string roman)
     {
         RomenNumeral.For(integer).Should().Be(roman);
@@ -46,9 +47,13 @@ public static class RomenNumeral
     {
         if (integer.Contains(1000, 'M', out var ms)) return ms;
         if (integer == 500) return "D";
-        if (integer.Contains(100, 'C', out var cs)) return cs;
-        if (integer == 50) return "L";
         var x = "";
+        if (integer.Contains(100, 'C', out var cs))
+        {
+            x+=cs;
+            integer -= Contained(integer, 100) * 100;
+        }
+        if (integer == 50) return "L";
         if (integer.Contains(10, 'X', out var xs))
         {
             x+=xs;
