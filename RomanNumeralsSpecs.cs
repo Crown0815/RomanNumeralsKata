@@ -48,22 +48,22 @@ public static class RomenNumeral
     public static string For(int integer)
     {
         return new Temp(integer, "")
-            .Contains(1000, 'M')
-            .Contains(500, 'D')
-            .Contains(100, 'C')
-            .Contains(50, 'L')
-            .Contains(10, 'X')
-            .Contains(5, 'V')
-            .Contains(1, 'I')
+            .Minus(1000, 'M')
+            .Minus(500, 'D')
+            .Minus(100, 'C')
+            .Minus(50, 'L')
+            .Minus(10, 'X')
+            .Minus(5, 'V')
+            .Minus(1, 'I')
             .Roman;
     }
     
 
-    private static Temp Contains(this Temp integer, int @base, char letter)
+    private static Temp Minus(this Temp value, int integer, char letter)
     {
-        var count = Contained(integer.Integer, @base);
-        var roman = integer.Roman + count.Times(letter);
-        return new Temp(integer.Integer - count*@base, roman);
+        var count = Contained(value.Integer, integer);
+        var roman = value.Roman + count.Times(letter);
+        return new Temp(value.Integer - count*integer, roman);
     }
     
     private static int Contained(this int integer, int @base) => integer >= @base 
