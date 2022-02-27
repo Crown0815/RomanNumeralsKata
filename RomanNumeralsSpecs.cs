@@ -59,18 +59,23 @@ public static class RomenNumeral
     public static string For(int integer)
     {
         return new Temp(integer, "")
-            .Minus(1000, "M")
-            .Minus(500, "D")
-            .Minus(100, "C")
-            .Minus(50, "L")
-            .Minus(10, "X")
-            .Minus(9, "IX")
-            .Minus(5, "V")
-            .Minus(4, "IV")
+            .Minus(1000, 'M', 100, 'C')
+            .Minus(500, 'D', 100, 'C')
+            .Minus(100, 'C', 10, 'X')
+            .Minus(50, 'L', 10, 'X')
+            .Minus(10, 'X', 1, 'I')
+            .Minus(5, 'V', 1, 'I')
             .Minus(1, "I")
             .Roman;
     }
     
+
+    private static Temp Minus(this Temp value, int integer, char letter, int subtrahend, char subtrahendLetter)
+    {
+        var count = Contained(value.Integer, integer);
+        var roman = value.Roman + count.Times(letter);
+        return new Temp(value.Integer - count*integer, roman).Minus(integer-subtrahend, $"{subtrahendLetter}{letter}");
+    }
 
     private static Temp Minus(this Temp value, int integer, string letter)
     {
@@ -84,4 +89,5 @@ public static class RomenNumeral
         : 0;
 
     private static string Times(this int repeats, string letter) => string.Join("", Enumerable.Repeat(letter, repeats));
+    private static string Times(this int repeats, char letter) => new (Enumerable.Repeat(letter, repeats).ToArray());
 }
