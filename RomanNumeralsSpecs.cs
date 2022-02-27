@@ -38,10 +38,18 @@ public static class RomenNumeral
         if (integer == 5) return "V";
         if (integer == 50) return "L";
         if (integer == 500) return "D";
-        if (integer == 1000) return "M";
-        if (integer.IsMultipleOf(100)) return (integer / 100).Times('C');
-        if (integer.IsMultipleOf(10)) return (integer / 10).Times('X');
+        if (integer.MultiplesOf(1000, 'M', out var ms)) return ms;
+        if (integer.MultiplesOf(100, 'C', out var cs)) return cs;
+        if (integer.MultiplesOf(10, 'X', out var xs)) return xs;
         return integer.Times('I');
+    }
+
+    private static bool MultiplesOf(this int integer, int @base, char letter, out string roman)
+    {
+        roman = integer.IsMultipleOf(@base) 
+            ? (integer / @base).Times(letter) 
+            : "";
+        return roman != "";
     }
 
     private static string Times(this int repeats, char letter)
