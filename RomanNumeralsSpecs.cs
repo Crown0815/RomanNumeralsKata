@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using Xunit;
@@ -95,5 +94,4 @@ public static class RomenNumeral
         : 0;
 
     private static string Times(this int repeats, string letter) => string.Join("", Enumerable.Repeat(letter, repeats));
-    private static string Times(this int repeats, char letter) => new (Enumerable.Repeat(letter, repeats).ToArray());
 }
