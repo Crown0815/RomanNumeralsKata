@@ -47,14 +47,15 @@ public static class RomenNumeral
     
     public static string For(int integer)
     {
-        var x = new Temp(integer, "");
-        x = x.Contains(1000, 'M');
-        if (integer == 500) return "D";
-        x = x.Contains(100, 'C');
-        if (integer == 50) return "L";
-        x = x.Contains(10, 'X');
-        if (integer == 5) return "V";
-        return x.Roman + x.Integer.Times('I');
+        var temp = new Temp(integer, "");
+        temp = temp.Contains(1000, 'M');
+        temp = temp.Contains(500, 'D');
+        temp = temp.Contains(100, 'C');
+        temp = temp.Contains(50, 'L');
+        temp = temp.Contains(10, 'X');
+        temp = temp.Contains(5, 'V');
+        temp = temp.Contains(1, 'I');
+        return temp.Roman;
     }
     
 
