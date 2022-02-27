@@ -17,6 +17,13 @@ public class RomanNumeralsSpecs
     {
         RomenNumeral.For(integer).Should().Be(roman.ToString());
     }
+    
+    [Theory]
+    [InlineData(1, 'I')]
+    public void I_may_be_repeated_up_to_three_times(int integer, char roman)
+    {
+        RomenNumeral.For(2*integer).Should().Be($"{roman}{roman}");
+    }
 }
 
 public static class RomenNumeral
@@ -29,6 +36,7 @@ public static class RomenNumeral
         if (integer == 100) return "C";
         if (integer == 500) return "D";
         if (integer == 1000) return "M";
+        if (integer == 2) return "II";
         return "I";
     }
 }
