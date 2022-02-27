@@ -50,6 +50,8 @@ public class RomanNumeralsSpecs
     [InlineData(90, "XC")]
     [InlineData(400, "CD")]
     [InlineData(900, "CM")]
+    [InlineData(3949, "MMMCMXLIX")]
+    [InlineData(3494, "MMMCDXCIV")]
     public void Roman_letters_are_subtracted_when_a_higher_value_follows_a_lower_value(int integer, string roman)
     {
         RomenNumeral.For(integer).Should().Be(roman);
