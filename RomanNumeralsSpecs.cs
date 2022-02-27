@@ -23,6 +23,7 @@ public class RomanNumeralsSpecs
     [Theory]
     [InlineData(1, 'I')]
     [InlineData(10, 'X')]
+    [InlineData(100, 'C')]
     public void I_may_be_repeated_up_to_three_times(int integer, char roman)
     {
         RomenNumeral.For(2*integer).Should().Be($"{roman}{roman}");
@@ -36,9 +37,9 @@ public static class RomenNumeral
     {
         if (integer == 5) return "V";
         if (integer == 50) return "L";
-        if (integer == 100) return "C";
         if (integer == 500) return "D";
         if (integer == 1000) return "M";
+        if (integer.IsMultipleOf(100)) return (integer / 100).Times('C');
         if (integer.IsMultipleOf(10)) return (integer / 10).Times('X');
         return integer.Times('I');
     }
