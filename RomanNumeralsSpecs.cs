@@ -36,12 +36,12 @@ public static class RomenNumeral
 {
     public static string For(int integer)
     {
-        if (integer == 5) return "V";
-        if (integer == 50) return "L";
-        if (integer == 500) return "D";
         if (integer.MultiplesOf(1000, 'M', out var ms)) return ms;
+        if (integer == 500) return "D";
         if (integer.MultiplesOf(100, 'C', out var cs)) return cs;
+        if (integer == 50) return "L";
         if (integer.MultiplesOf(10, 'X', out var xs)) return xs;
+        if (integer == 5) return "V";
         return integer.Times('I');
     }
 
