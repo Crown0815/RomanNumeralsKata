@@ -24,6 +24,7 @@ public class RomanNumeralsSpecs
     [InlineData(1, 'I')]
     [InlineData(10, 'X')]
     [InlineData(100, 'C')]
+    [InlineData(1000, 'M')]
     public void I_may_be_repeated_up_to_three_times(int integer, char roman)
     {
         RomenNumeral.For(2*integer).Should().Be($"{roman}{roman}");
