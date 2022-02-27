@@ -67,11 +67,15 @@ public class RomanNumeralsSpecs
 
 public static class RomanNumeral
 {
-    private record Temp(int Integer, string Roman);
+    private record Temp(int Integer, string Roman)
+    {
+        public Temp After(Map map) => new(Integer - map.Integer, Roman + map.Letter);
+    }
 
     private record Map(int Integer, string Letter)
     {
         public static Map operator -(Map one, Map two) => new(one.Integer - two.Integer, $"{two.Letter}{one.Letter}");
+        public static Map operator *(int count, Map map) => new(count * map.Integer, count.Times(map.Letter));
     }
 
     private static readonly Map M = new(1000, "M");
@@ -106,8 +110,7 @@ public static class RomanNumeral
     private static Temp Minus(this Temp value, Map map)
     {
         var count = Contained(value.Integer, map.Integer);
-        var roman = value.Roman + count.Times(map.Letter);
-        return new Temp(value.Integer - count * map.Integer, roman);
+        return value.After(count * map);
     }
     
     private static int Contained(this int integer, int @base) => integer >= @base 
