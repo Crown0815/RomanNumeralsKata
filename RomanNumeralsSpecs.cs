@@ -16,7 +16,7 @@ public class RomanNumeralsSpecs
     [InlineData(1000, 'M')]
     public void Integer_maps_onto_roman_letter(int integer, char roman)
     {
-        RomenNumeral.For(integer).Should().Be(roman.ToString());
+        RomanNumeral.For(integer).Should().Be(roman.ToString());
     }
     
     [Theory]
@@ -26,8 +26,8 @@ public class RomanNumeralsSpecs
     [InlineData(1000, 'M')]
     public void I_X_C_and_M_letters_may_be_repeated_up_to_three_times(int integer, char roman)
     {
-        RomenNumeral.For(2*integer).Should().Be($"{roman}{roman}");
-        RomenNumeral.For(3*integer).Should().Be($"{roman}{roman}{roman}");
+        RomanNumeral.For(2*integer).Should().Be($"{roman}{roman}");
+        RomanNumeral.For(3*integer).Should().Be($"{roman}{roman}{roman}");
     }
     
     [Theory]
@@ -38,7 +38,7 @@ public class RomanNumeralsSpecs
     [InlineData(3555, "MMMDLV")]
     public void Roman_letters_are_added_when_a_lower_value_follows_a_higher_value(int integer, string roman)
     {
-        RomenNumeral.For(integer).Should().Be(roman);
+        RomanNumeral.For(integer).Should().Be(roman);
     }
     
     
@@ -53,11 +53,11 @@ public class RomanNumeralsSpecs
     [InlineData(3494, "MMMCDXCIV")]
     public void Roman_letters_are_subtracted_when_a_higher_value_follows_a_lower_value(int integer, string roman)
     {
-        RomenNumeral.For(integer).Should().Be(roman);
+        RomanNumeral.For(integer).Should().Be(roman);
     }
 }
 
-public static class RomenNumeral
+public static class RomanNumeral
 {
     private record Temp(int Integer, string Roman);
 
