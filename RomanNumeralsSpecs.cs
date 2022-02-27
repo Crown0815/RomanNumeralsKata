@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Xunit;
 
@@ -36,7 +38,11 @@ public static class RomenNumeral
         if (integer == 100) return "C";
         if (integer == 500) return "D";
         if (integer == 1000) return "M";
-        if (integer == 2) return "II";
-        return "I";
+        return integer.Times('I');
+    }
+
+    private static string Times(this int repeats, char letter)
+    {
+        return new string(Enumerable.Repeat(letter, repeats).ToArray());
     }
 }
