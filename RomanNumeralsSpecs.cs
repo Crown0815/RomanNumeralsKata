@@ -30,6 +30,14 @@ public class RomanNumeralsSpecs
         RomenNumeral.For(2*integer).Should().Be($"{roman}{roman}");
         RomenNumeral.For(3*integer).Should().Be($"{roman}{roman}{roman}");
     }
+    
+    [Theory]
+    [InlineData(11, "XI")]
+    public void Roman_letters_are_added_when_a_lower_value_follows_a_higher_value(int integer, string roman)
+    {
+        RomenNumeral.For(integer).Should().Be(roman);
+    }
+
 }
 
 public static class RomenNumeral
@@ -40,16 +48,33 @@ public static class RomenNumeral
         if (integer == 500) return "D";
         if (integer.MultiplesOf(100, 'C', out var cs)) return cs;
         if (integer == 50) return "L";
-        if (integer.MultiplesOf(10, 'X', out var xs)) return xs;
+        var x = "";
+        if (integer.Contains(10, 'X', out var xs))
+        {
+            x+=xs;
+            integer -= Contained(integer, 10) * 10;
+        }
         if (integer == 5) return "V";
-        return integer.Times('I');
+        return x + integer.Times('I');
     }
+    
 
+    private static bool Contains(this int integer, int @base, char character, out string roman)
+    {
+        roman = Contained(integer, @base).Times(character);
+        return roman != "";
+    }
+    
+    private static int Contained(this int integer, int @base) => integer >= @base 
+        ? integer / @base
+        : 0;
+    
     private static bool MultiplesOf(this int integer, int @base, char character, out string roman)
     {
         roman = MultiplesOf(integer, @base).Times(character);
         return roman != "";
     }
+    
     private static int MultiplesOf(this int integer, int @base) => integer.IsMultipleOf(@base) 
             ? integer / @base
             : 0;
