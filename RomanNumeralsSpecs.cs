@@ -100,12 +100,9 @@ public static class RomanNumeral
     }
     
 
-    private static Temp Minus(this Temp value, Map primary, Map subtrahend)
-    {
-        return value
-            .Minus(primary)
-            .Minus(primary-subtrahend);
-    }
+    private static Temp Minus(this Temp value, Map primary, Map subtrahend) => value
+        .Minus(primary)
+        .Minus(primary-subtrahend);
 
     private static Temp Minus(this Temp value, Map map) => value.After(map.CountIn(value) * map);
 
