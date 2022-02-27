@@ -39,7 +39,7 @@ public static class RomenNumeral
         if (integer == 100) return "C";
         if (integer == 500) return "D";
         if (integer == 1000) return "M";
-        if (integer % 10 == 0) return (integer / 10).Times('X');
+        if (integer.IsMultipleOf(10)) return (integer / 10).Times('X');
         return integer.Times('I');
     }
 
@@ -47,4 +47,6 @@ public static class RomenNumeral
     {
         return new string(Enumerable.Repeat(letter, repeats).ToArray());
     }
+    
+    private static bool IsMultipleOf(this int integer, int @base) => integer % @base == 0;
 }
