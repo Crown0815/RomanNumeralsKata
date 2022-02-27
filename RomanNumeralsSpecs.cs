@@ -50,17 +50,11 @@ public static class RomenNumeral
         roman = MultiplesOf(integer, @base).Times(character);
         return roman != "";
     }
-    private static int MultiplesOf(this int integer, int @base)
-    {
-        return integer.IsMultipleOf(@base) 
+    private static int MultiplesOf(this int integer, int @base) => integer.IsMultipleOf(@base) 
             ? integer / @base
             : 0;
-    }
 
-    private static string Times(this int repeats, char letter)
-    {
-        return new string(Enumerable.Repeat(letter, repeats).ToArray());
-    }
-    
+    private static string Times(this int repeats, char letter) => new(Enumerable.Repeat(letter, repeats).ToArray());
+
     private static bool IsMultipleOf(this int integer, int @base) => integer % @base == 0;
 }
