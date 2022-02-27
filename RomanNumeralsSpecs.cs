@@ -107,13 +107,11 @@ public static class RomanNumeral
             .Minus(primary-subtrahend);
     }
 
-    private static Temp Minus(this Temp value, Map map)
-    {
-        var count = Contained(value.Integer, map.Integer);
-        return value.After(count * map);
-    }
+    private static Temp Minus(this Temp value, Map map) => value.After(map.CountIn(value) * map);
+
+    private static int CountIn(this Map @base, Temp current) => @base.Integer.CountIn(current.Integer);
     
-    private static int Contained(this int integer, int @base) => integer >= @base 
+    private static int CountIn(this int @base, int integer) => integer >= @base 
         ? integer / @base
         : 0;
 
