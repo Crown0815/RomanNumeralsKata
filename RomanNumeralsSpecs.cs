@@ -72,9 +72,9 @@ public static class RomenNumeral
 
     private static Temp Minus(this Temp value, int integer, char letter, int subtrahend, char subtrahendLetter)
     {
-        var count = Contained(value.Integer, integer);
-        var roman = value.Roman + count.Times(letter);
-        return new Temp(value.Integer - count*integer, roman).Minus(integer-subtrahend, $"{subtrahendLetter}{letter}");
+        return value
+            .Minus(integer, $"{letter}")
+            .Minus(integer-subtrahend, $"{subtrahendLetter}{letter}");
     }
 
     private static Temp Minus(this Temp value, int integer, string letter)
